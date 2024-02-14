@@ -7,6 +7,30 @@
 
 import SwiftUI
 
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundStyle(.blue)
+    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+}
+
+struct FlagImage : View {
+    var fileName: String
+    
+    var body: some View {
+        Image(fileName)
+            .clipShape(.capsule)
+            .shadow(radius: 5)
+    }
+}
+
 struct ContentView: View {
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy",  "Monaco", "Nigeria", "Poland", "Russia" ,"Spain", "Uk", "Us"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
@@ -49,9 +73,7 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .clipShape(.capsule)
-                                .shadow(radius: 5)
+                            FlagImage(fileName: countries[number])
                         }
                     }
                 }.frame(maxWidth: .infinity)
