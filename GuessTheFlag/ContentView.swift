@@ -44,6 +44,10 @@ struct ContentView: View {
     @State private var keepGoing = false
     @State private var attemptsTitle = ""
     
+    @State private var rotateAmount = [0.0, 0.0, 0.0]  // project 6 - challenge 1
+    @State private var opacityAmount = [1.0, 1.0, 1.0] // project 6 - challenge 2
+    @State private var scaleAmount = [1.0, 1.0, 1.0]   // project 6 - challenge 3
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -75,11 +79,16 @@ struct ContentView: View {
                         } label: {
                             FlagImage(fileName: countries[number])
                         }
+                        .rotation3DEffect(Angle(degrees: rotateAmount[number]), axis: (x: 0, y: 1, z: 0)) // project 6 - challenge 1
+                        .opacity(opacityAmount[number])     // project 6 - challenge 2
+                        .scaleEffect(scaleAmount[number])   // project 6 - challenge 3
+                        .animation(.default, value: scaleAmount)
                     }
                 }.frame(maxWidth: .infinity)
                     .padding(.vertical, 20)
                     .background(.regularMaterial)
                     .clipShape(.rect(cornerRadius: 20))
+
                 
                 Spacer()
                 Spacer()
@@ -107,6 +116,15 @@ struct ContentView: View {
 
     
     func flagTapped(_ number: Int) {
+        // project 6 - challenge 1
+        rotateAmount[number] += 360
+
+        // project 6 - challenge 2 and 3
+        for notTapped in 0..<3 where notTapped != number {
+            opacityAmount[notTapped] = 0.25
+            scaleAmount[notTapped] = 0.50
+        }
+        
         if number == correctAnswer{
             scoreTitle = "Correct"
             score += 1
@@ -126,16 +144,23 @@ struct ContentView: View {
             keepGoing = true
         }
         showingScore = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        }
     }
     
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        opacityAmount = [1.0, 1.0, 1.0]
+        scaleAmount = [1.0, 1.0, 1.0]
     }
     
     func resetFunc() {
         score = 0
         attempts = 0
+        
+        opacityAmount = [1.0, 1.0, 1.0]
+        scaleAmount = [1.0, 1.0, 1.0]
     }
 }
 
