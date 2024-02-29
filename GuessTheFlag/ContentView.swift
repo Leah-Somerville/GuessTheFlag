@@ -44,9 +44,11 @@ struct ContentView: View {
     @State private var keepGoing = false
     @State private var attemptsTitle = ""
     
-    @State private var rotateAmount = [0.0, 0.0, 0.0]  // project 6 - challenge 1
-    @State private var opacityAmount = [1.0, 1.0, 1.0] // project 6 - challenge 2
-    @State private var scaleAmount = [1.0, 1.0, 1.0]   // project 6 - challenge 3
+    
+//    DAY 34
+    @State private var rotateAmount = [0.0, 0.0, 0.0]
+    @State private var opacityAmount = [1.0, 1.0, 1.0]
+    @State private var scaleAmount = [1.0, 1.0, 1.0]
     
     var body: some View {
         ZStack {
@@ -79,9 +81,10 @@ struct ContentView: View {
                         } label: {
                             FlagImage(fileName: countries[number])
                         }
-                        .rotation3DEffect(Angle(degrees: rotateAmount[number]), axis: (x: 0, y: 1, z: 0)) // project 6 - challenge 1
-                        .opacity(opacityAmount[number])     // project 6 - challenge 2
-                        .scaleEffect(scaleAmount[number])   // project 6 - challenge 3
+//                       DAY 34
+                        .rotation3DEffect(Angle(degrees: rotateAmount[number]), axis: (x: 0, y: 1, z: 0))
+                        .opacity(opacityAmount[number])
+                        .scaleEffect(scaleAmount[number])
                         .animation(.default, value: scaleAmount)
                     }
                 }.frame(maxWidth: .infinity)
@@ -116,15 +119,15 @@ struct ContentView: View {
 
     
     func flagTapped(_ number: Int) {
-        // project 6 - challenge 1
+//        DAY 34
         rotateAmount[number] += 360
 
-        // project 6 - challenge 2 and 3
         for notTapped in 0..<3 where notTapped != number {
             opacityAmount[notTapped] = 0.25
             scaleAmount[notTapped] = 0.50
         }
         
+//
         if number == correctAnswer{
             scoreTitle = "Correct"
             score += 1
@@ -144,6 +147,7 @@ struct ContentView: View {
             keepGoing = true
         }
         showingScore = true
+//        DAY 34
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         }
     }
@@ -159,6 +163,7 @@ struct ContentView: View {
         score = 0
         attempts = 0
         
+//        DAY 34
         opacityAmount = [1.0, 1.0, 1.0]
         scaleAmount = [1.0, 1.0, 1.0]
     }
